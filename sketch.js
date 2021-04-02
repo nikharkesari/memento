@@ -1,10 +1,7 @@
 let mic, recorder, soundFile;
 let state = 0;
-
+let c = 0;
 function setup() {
-    let cnv = createCanvas(100, 100);
-    cnv.mousePressed(canvasPressed);
-    background(220);
     mic = new p5.AudioIn();
     mic.start();
     recorder = new p5.SoundRecorder();
@@ -12,23 +9,23 @@ function setup() {
     soundFile = new p5.SoundFile();
 }
 
-function canvasPressed() {
+function draw() {
+    c++;
     userStartAudio();
     if (state === 0 && mic.enabled) {
         recorder.record(soundFile);
         background(255, 0, 0);
         text('Recording!', width / 2, height / 2);
-        state++;
     }
     else if (state === 1) {
         background(0, 255, 0);
         recorder.stop();
         state++;
     }
-
-    else if (state === 2) {
-        soundFile.play();
-        //save(soundFile, 'mySound.wav');
-        state++;
+    if (c == 200) {
+        state = 1;
     }
+}
+function mousePressed() {
+    soundFile.play();
 }
