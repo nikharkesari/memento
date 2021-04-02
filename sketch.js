@@ -1,12 +1,15 @@
-let mic, recorder, soundFile;
+let mic, recorder, soundFile, a, b;
 let state = 0;
 let c = 0;
 function setup() {
+    textAlign(CENTER, CENTER);
     mic = new p5.AudioIn();
     mic.start();
     recorder = new p5.SoundRecorder();
     recorder.setInput(mic);
     soundFile = new p5.SoundFile();
+    a = new p5.SoundFile();
+    b = new p5.SoundFile();
 }
 
 function draw() {
@@ -20,12 +23,16 @@ function draw() {
     else if (state === 1) {
         background(0, 255, 0);
         recorder.stop();
-        state++;
+        b = a;
+        a = soundFile;
+        state = 0;
+        c = 0;
     }
     if (c == 200) {
         state = 1;
     }
 }
 function mousePressed() {
-    soundFile.play();
+    b.play();
+    state = 2;
 }
