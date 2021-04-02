@@ -1,8 +1,17 @@
 let mic, recorder, soundFile, a, b;
 let state = 0;
 let c = 0;
+let logo;
+function preload() {
+    logo = loadImage('logo.png');
+}
 function setup() {
-    textAlign(CENTER, CENTER);
+    createCanvas(windowWidth, windowHeight);
+    background(255)
+    textAlign(CENTER)
+    imageMode(CENTER)
+    image(logo, width / 2, height / 2)
+    text('Tap anywhere to save the PAST...', width / 2, 80 + height / 2)
     mic = new p5.AudioIn();
     mic.start();
     recorder = new p5.SoundRecorder();
@@ -17,11 +26,9 @@ function draw() {
     userStartAudio();
     if (state === 0 && mic.enabled) {
         recorder.record(soundFile);
-        background(255, 0, 0);
-        text('Recording!', width / 2, height / 2);
+        text('Recording!', width / 2, 50 + height / 2);
     }
     else if (state === 1) {
-        background(0, 255, 0);
         recorder.stop();
         b = a;
         a = soundFile;
@@ -33,6 +40,13 @@ function draw() {
     }
 }
 function mousePressed() {
+    background(255);
+    image(logo, width / 2, height / 2)
     b.play();
+    createButton('save').mousePressed(saveaudio).position(width / 2 - 10, 80 + height / 2)
     state = 2;
+    c = 300;
+}
+function saveaudio() {
+    save(b, 'mySound.wav');
 }
